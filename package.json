@@ -1,0 +1,29 @@
+{
+  "name": "tui-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bridge any TUI application to a mobile-friendly web terminal via Cloudflare Quick Tunnel.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace @tui-bridge/protocol && npm run build --workspace @tui-bridge/web && npm run build --workspace tui-bridge && npm run build --workspace @tui-bridge/site",
+    "typecheck": "npm run build --workspace @tui-bridge/protocol && npm run typecheck --workspaces --if-present",
+    "lint": "eslint .",
+    "dev": "npm run dev --workspace apps/web",
+    "site": "npm run dev --workspace @tui-bridge/site",
+    "start": "node packages/tui-bridge/dist/cli.js",
+    "clean": "node scripts/clean.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "eslint": "^9.18.0",
+    "typescript": "^5.7.3"
+  },
+  "license": "MIT"
+}

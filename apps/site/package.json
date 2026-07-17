@@ -1,0 +1,23 @@
+{
+  "name": "@tui-bridge/site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "tui-bridge marketing site and documentation (Astro + Starlight).",
+  "scripts": {
+    "dev": "node scripts/og.mjs && astro dev",
+    "build": "node scripts/og.mjs && astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.41.3",
+    "astro": "^7.1.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "sharp": "^0.35.3",
+    "typescript": "^5.7.3"
+  },
+  "license": "MIT"
+}

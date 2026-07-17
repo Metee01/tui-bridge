@@ -1,0 +1,53 @@
+{
+  "name": "tui-bridge",
+  "version": "0.1.4",
+  "type": "module",
+  "description": "Bridge any TUI application to a mobile-friendly web terminal via Cloudflare Quick Tunnel.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "tui-bridge": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Metee01/tui-bridge.git",
+    "directory": "packages/tui-bridge"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/bundle-web.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev": "tsx watch src/cli.ts"
+  },
+  "dependencies": {
+    "@tui-bridge/protocol": "*",
+    "@xterm/addon-serialize": "^0.13.0",
+    "@xterm/headless": "^5.5.0",
+    "nanoid": "^5.0.9",
+    "node-pty": "^1.0.0",
+    "qrcode": "^1.5.4",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/qrcode": "^1.5.5",
+    "@types/ws": "^8.5.13",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,41 @@
+---
+import Default from "@astrojs/starlight/components/Footer.astro";
+import { siteConfig } from "../../site.config.mjs";
+
+const year = new Date().getFullYear();
+---
+
+<Default />
+
+<div class="tb-doc-brand sl-flex">
+	<span>&copy; {year} tui-bridge &middot; MIT licensed</span>
+	<span class="tb-doc-links">
+		<a href={siteConfig.repo.url}>GitHub</a>
+		<a href={siteConfig.npm.url}>npm</a>
+		<a href="/getting-started/">Docs</a>
+	</span>
+</div>
+
+<style>
+	.tb-doc-brand {
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 0.5rem 1.5rem;
+		margin-top: 0.5rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--sl-color-hairline-shade);
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-3);
+	}
+	.tb-doc-links {
+		display: inline-flex;
+		gap: 1.25rem;
+	}
+	.tb-doc-brand a {
+		color: var(--sl-color-gray-3);
+		text-decoration: none;
+	}
+	.tb-doc-brand a:hover {
+		color: var(--sl-color-accent);
+	}
+</style>

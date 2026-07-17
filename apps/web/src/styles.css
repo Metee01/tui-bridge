@@ -1,0 +1,164 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #0a0a0a;
+  color: #eaeaea;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.app__status {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  font-size: 12px;
+  background: #141414;
+  border-bottom: 1px solid #262626;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #555;
+  flex: 0 0 auto;
+}
+.status-dot--live { background: #34d399; }
+.status-dot--connecting { background: #fbbf24; }
+.status-dot--down { background: #ef4444; }
+
+.app__terminal {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  position: relative;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app__terminal-inner {
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.app__toolbar {
+  flex: 0 0 auto;
+  background: #141414;
+  border-top: 1px solid #262626;
+  padding: 4px 6px;
+  padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: 100%;
+}
+
+.toolbar-row--scroll {
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  padding-bottom: 2px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.keybutton {
+  background: #1f1f1f;
+  color: #eaeaea;
+  border: 1px solid #2e2e2e;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  min-width: 44px;
+  min-height: 44px;
+  touch-action: manipulation;
+  flex: 0 0 auto;
+}
+.keybutton:active {
+  background: #2a2a2a;
+}
+.keybutton:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.keybutton--modifier.keybutton--active {
+  background: #2563eb;
+  border-color: #3b82f6;
+}
+.keybutton--special {
+  min-width: 48px;
+  font-weight: 600;
+}
+.keybutton--keyboard {
+  background: #1e3a5f;
+  border-color: #2563eb;
+  font-weight: 600;
+}
+.keybutton--take {
+  background: #14532d;
+  border-color: #16a34a;
+  font-weight: 600;
+}
+.keybutton--take:active {
+  background: #166534;
+}
+.keybutton--release {
+  background: #7f1d1d;
+  border-color: #dc2626;
+  font-weight: 600;
+}
+.keybutton--release:active {
+  background: #991b1b;
+}
+
+.pair {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 24px;
+  text-align: center;
+  gap: 16px;
+}
+.pair__card {
+  background: #141414;
+  border: 1px solid #262626;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 420px;
+  width: 100%;
+}
+.pair__error {
+  color: #f87171;
+  font-size: 13px;
+}
+.muted { color: #888; font-size: 12px; }

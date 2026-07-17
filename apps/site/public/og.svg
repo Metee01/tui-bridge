@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="mk" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#34d399"/>
+      <stop offset="1" stop-color="#10b981"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.55" r="0.5">
+      <stop offset="0" stop-color="#34d399" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#34d399" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <g transform="translate(80, 78)">
+    <rect width="56" height="56" rx="14" fill="#0a0a0a" stroke="#34d399" stroke-opacity="0.35" stroke-width="1.5"/>
+    <rect x="12" y="12" width="32" height="32" rx="8" fill="url(#mk)"/>
+    <text x="28" y="28" text-anchor="middle" dominant-baseline="central" font-family="monospace" font-weight="700" font-size="26" fill="#04140d">t</text>
+  </g>
+  <text x="156" y="106" dominant-baseline="central" font-family="monospace" font-weight="700" font-size="34" fill="#eaeaea" letter-spacing="-0.5">tui-bridge</text>
+
+  <text x="80" y="232" dominant-baseline="central" font-family="monospace" font-size="24" fill="#34d399" letter-spacing="3">ANY TUI · ON YOUR PHONE</text>
+
+  <text x="78" y="320" font-family="sans-serif" font-weight="800" font-size="82" fill="#eaeaea" letter-spacing="-2">Any TUI,</text>
+  <text x="78" y="412" font-family="sans-serif" font-weight="800" font-size="82" fill="#34d399" letter-spacing="-2">on your phone.</text>
+
+  <text x="80" y="478" font-family="sans-serif" font-size="28" fill="#a0a0a8">Bridge any terminal to a mobile web terminal.</text>
+  <text x="80" y="512" font-family="sans-serif" font-size="28" fill="#a0a0a8">No port forwarding. No central server.</text>
+
+  <g transform="translate(770, 232)">
+    <rect width="360" height="200" rx="16" fill="#111114" stroke="#262629" stroke-width="1.5"/>
+    <circle cx="22" cy="24" r="6" fill="#ef4444"/>
+    <circle cx="44" cy="24" r="6" fill="#f59e0b"/>
+    <circle cx="66" cy="24" r="6" fill="#34d399"/>
+    <line x1="0" y1="48" x2="360" y2="48" stroke="#262629" stroke-width="1"/>
+    <text x="22" y="86" font-family="monospace" font-size="20" fill="#a0a0a8">$ curl -fsSL tui-bridge.vercel.app/install | bash</text>
+    <text x="22" y="124" font-family="monospace" font-size="20" fill="#a0a0a8">$ tui-bridge opencode</text>
+    <text x="22" y="168" font-family="monospace" font-size="18" fill="#34d399">▸ scan QR — driving from phone ▸</text>
+  </g>
+
+  <text x="80" y="572" dominant-baseline="central" font-family="monospace" font-size="22" fill="#6b6b73">tui-bridge.vercel.app</text>
+  <text x="1120" y="572" text-anchor="end" dominant-baseline="central" font-family="monospace" font-size="22" fill="#6b6b73">MIT · open source</text>
+</svg>

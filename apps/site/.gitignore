@@ -1,0 +1,13 @@
+# build output
+dist/
+# generated types
+.astro/
+# dependencies
+node_modules/
+# generated PNG assets (rasterized from SVG by scripts/og.mjs)
+public/og.png
+public/apple-touch-icon.png
+public/icon-192.png
+public/icon-512.png
+public/favicon-32.png
+public/favicon-16.png

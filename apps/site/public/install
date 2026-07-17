@@ -1,0 +1,177 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+APP=tui-bridge
+NPM_NAME=tui-bridge
+REQUIRED_NODE_MAJOR=22
+
+MUTED='\033[0;2m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+ORANGE='\033[38;5;214m'
+NC='\033[0m'
+
+usage() {
+    cat <<EOF
+tui-bridge Installer
+
+Usage: install.sh [options]
+
+Options:
+    -h, --help              Display this help message
+    -v, --version <version> Install a specific version (e.g. 0.1.0)
+        --no-modify-path    No-op (npm manages PATH); accepted for compatibility
+
+Examples:
+    curl -fsSL https://tui-bridge.vercel.app/install | bash
+    curl -fsSL https://tui-bridge.vercel.app/install | bash -s -- --version 0.1.0
+EOF
+}
+
+requested_version=""
+no_modify_path=false
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -v|--version)
+            if [[ -n "${2:-}" ]]; then
+                requested_version="${2#v}"
+                shift 2
+            else
+                echo -e "${RED}Error: --version requires a version argument${NC}" >&2
+                exit 1
+            fi
+            ;;
+        --no-modify-path)
+            no_modify_path=true
+            shift
+            ;;
+        *)
+            echo -e "${ORANGE}Warning: Unknown option '$1'${NC}" >&2
+            shift
+            ;;
+    esac
+done
+
+info()  { echo -e "${NC}${1}${NC}"; }
+warn()  { echo -e "${ORANGE}${1}${NC}" >&2; }
+error() { echo -e "${RED}${1}${NC}" >&2; }
+
+# ---------------------------------------------------------------------------
+# 1. Node.js >= 22 check
+# ---------------------------------------------------------------------------
+node_major=""
+if command -v node >/dev/null 2>&1; then
+    node_major=$(node -e "process.stdout.write(String(process.versions.node.split('.')[0]))" 2>/dev/null || echo "")
+fi
+
+if [[ -z "$node_major" || "$node_major" -lt "$REQUIRED_NODE_MAJOR" ]]; then
+    error "Node.js >= ${REQUIRED_NODE_MAJOR} is required."
+    echo    "" >&2
+    info "Install Node.js ${REQUIRED_NODE_MAJOR}+ and re-run this script:" >&2
+    echo    "" >&2
+    raw_os=$(uname -s)
+    case "$raw_os" in
+        Darwin*)
+            echo -e "  ${MUTED}macOS:${NC}  brew install node@22" >&2
+            echo -e "          or:  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash && nvm install 22" >&2
+            ;;
+        Linux*)
+            echo -e "  ${MUTED}Linux:${NC}  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash && nvm install 22" >&2
+            echo -e "          (Debian/Ubuntu: use NodeSource or nvm; distro node is often too old)" >&2
+            ;;
+        MINGW*|MSYS*|CYGWIN*)
+            echo -e "  ${MUTED}Windows:${NC} winget install OpenJS.NodeJS.LTS" >&2
+            echo -e "            or:  https://nodejs.org/en/download" >&2
+            ;;
+        *)
+            echo -e "  ${MUTED}See:${NC} https://nodejs.org/en/download" >&2
+            ;;
+    esac
+    echo "" >&2
+    exit 1
+fi
+
+# ---------------------------------------------------------------------------
+# 2. npm check
+# ---------------------------------------------------------------------------
+if ! command -v npm >/dev/null 2>&1; then
+    error "npm was not found. It ships with Node.js -- reinstall Node.js ${REQUIRED_NODE_MAJOR}+."
+    exit 1
+fi
+
+# ---------------------------------------------------------------------------
+# 3. Install
+# ---------------------------------------------------------------------------
+package_spec="${NPM_NAME}@latest"
+if [[ -n "$requested_version" ]]; then
+    package_spec="${NPM_NAME}@${requested_version}"
+fi
+
+info "\n${MUTED}Installing ${NC}${APP}${MUTED} via npm: ${NC}${package_spec}"
+
+if ! npm install -g "$package_spec" 2>&1; then
+    error "\nnpm install failed."
+    echo    "" >&2
+    info "If this was a native build failure for node-pty, install a compiler:" >&2
+    raw_os=$(uname -s)
+    case "$raw_os" in
+        Darwin*)
+            echo -e "  ${MUTED}macOS:${NC}   xcode-select --install" >&2
+            ;;
+        Linux*)
+            echo -e "  ${MUTED}Linux:${NC}   sudo apt install build-essential" >&2
+            ;;
+        MINGW*|MSYS*|CYGWIN*)
+            echo -e "  ${MUTED}Windows:${NC} winget install Microsoft.VisualStudio.2022.BuildTools" >&2
+            echo -e "          (enable the \"Desktop development with C++\" workload)" >&2
+            ;;
+    esac
+    exit 1
+fi
+
+# ---------------------------------------------------------------------------
+# 4. Verify
+# ---------------------------------------------------------------------------
+installed_version=""
+if command -v "$APP" >/dev/null 2>&1; then
+    installed_version=$("$APP" --version 2>/dev/null | sed -E 's/^tui-bridge[[:space:]]+//' || echo "")
+fi
+
+if [[ -z "$installed_version" ]]; then
+    warn "${APP} installed but not on PATH."
+    npm_global_bin=$(npm config get prefix 2>/dev/null || echo "")
+    info "Add npm's global bin to your PATH:"
+    case "$(uname -s)" in
+        Darwin*|Linux*)
+            echo -e "  export PATH=\"\$($npm config get prefix)/bin:\$PATH\"" >&2
+            ;;
+        *)
+            echo -e "  npm prefix: ${npm_global_bin}" >&2
+            ;;
+    esac
+    installed_version="(installed; restart your shell)"
+fi
+
+# ---------------------------------------------------------------------------
+# 5. Banner
+# ---------------------------------------------------------------------------
+echo -e ""
+echo -e "${MUTED}                    ${NC}             ▄     "
+echo -e "${MUTED}█▀▀█ █▀▀█ █▀▀█ █▀▀▄ ${NC}█▀▀▀ █▀▀█ █▀▀█ █▀▀█"
+echo -e "${MUTED}█░░█ █░░█ █▀▀▀ █░░█ ${NC}█░░░ █░░█ █░░█ █▀▀▀"
+echo -e "${MUTED}▀▀▀▀ █▀▀▀ ▀▀▀▀ ▀  ▀ ${NC}▀▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀"
+echo -e ""
+echo -e "${GREEN}Installed ${APP} ${installed_version}${NC}"
+echo -e ""
+echo -e "${MUTED}Get started:${NC}"
+echo -e ""
+echo -e "  cd <project>     ${MUTED}# the folder you want to work in${NC}"
+echo -e "  tui-bridge <tui> ${MUTED}# e.g. tui-bridge opencode${NC}"
+echo -e ""
+echo -e "${MUTED}Docs: ${NC}https://tui-bridge.vercel.app/getting-started/"
+echo -e ""
