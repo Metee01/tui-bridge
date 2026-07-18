@@ -1,5 +1,6 @@
 ---
 import Default from "@astrojs/starlight/components/Head.astro";
+import Analytics from "@vercel/analytics/astro";
 
 const ogImage = Astro.site
   ? new URL("/og.png", Astro.site).toString()
@@ -7,6 +8,7 @@ const ogImage = Astro.site
 ---
 
 <Default />
+<Analytics />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link

@@ -2,6 +2,7 @@
 import { readFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { siteConfig } from "../../site.config.mjs";
+import Analytics from "@vercel/analytics/astro";
 import "../styles/custom.css";
 
 function findCliPackageJson(): string | null {
@@ -228,6 +229,7 @@ const badges = [
         }
       })();
     </script>
+    <Analytics />
   </head>  <body
     style="margin:0;background:var(--tb-bg);color:var(--tb-text);font-family:var(--tb-font);line-height:1.6;-webkit-font-smoothing:antialiased;"
   >
