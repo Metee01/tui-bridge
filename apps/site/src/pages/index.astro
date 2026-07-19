@@ -599,9 +599,9 @@ const badges = [
 
       const tabWrap = document.querySelector("[data-install-tabs]");
       if (tabWrap) {
-        const tabs = tabWrap.querySelectorAll("[data-tab]");
-        const panels = tabWrap.querySelectorAll("[data-panel]");
-        const selectTab = (id) => {
+        const tabs = tabWrap.querySelectorAll<HTMLElement>("[data-tab]");
+        const panels = tabWrap.querySelectorAll<HTMLElement>("[data-panel]");
+        const selectTab = (id: string | undefined) => {
           tabs.forEach((t) =>
             t.setAttribute("aria-selected", t.dataset.tab === id ? "true" : "false"),
           );
