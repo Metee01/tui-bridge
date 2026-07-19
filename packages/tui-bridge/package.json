@@ -1,6 +1,6 @@
 {
   "name": "tui-bridge",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "type": "module",
   "description": "Bridge any TUI application to a mobile-friendly web terminal via Cloudflare Quick Tunnel.",
   "main": "./dist/index.js",
