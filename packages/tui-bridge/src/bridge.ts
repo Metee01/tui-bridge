@@ -9,7 +9,7 @@ import { CloudflareQuickTunnel, findCloudflared } from "./tunnel/index.js";
 import { WsGateway } from "./server/ws-gateway.js";
 import { createStaticServer } from "./server/http-server.js";
 import { parseTargetCommand, detectSize } from "./platform/spawn-target.js";
-import { detectLanIp } from "./platform/lan.js";
+import { detectLanIp, listLanCandidates } from "./platform/lan.js";
 import { createLogger } from "./logger.js";
 import type { SessionStatus } from "@tui-bridge/protocol";
 
@@ -111,7 +111,7 @@ export class Bridge {
         resolve(p);
       });
     });
-    if (!this.#noTunnel) await this.startTunnel(port);
+    if (!this.#noTunnel && !this.#lan) await this.startTunnel(port);
 
     // Determine the URL that is actually reachable from a phone.
     const publicUrl = this.resolvePublicUrl(port);
@@ -189,8 +189,17 @@ export class Bridge {
   private resolvePublicUrl(port: number): string | null {
     if (this.#tunnel?.url) return this.#tunnel.url;
     if (this.#lan) {
+      const candidates = listLanCandidates();
+      if (candidates.length > 0) {
+        this.#logger.info(
+          `LAN candidates: ${candidates.map((c) => `${c.name}=${c.ip}`).join(", ")}`,
+        );
+      }
       const ip = detectLanIp();
-      if (ip) return `http://${ip}:${port}`;
+      if (ip) {
+        this.#logger.info(`Selected LAN IP: ${ip}`);
+        return `http://${ip}:${port}`;
+      }
       this.#logger.warn("--lan was set but no LAN IPv4 address was found");
     }
     return null;
