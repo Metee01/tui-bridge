@@ -8,3 +8,4 @@ dist
 .env.local
 graphify-out
 AGENTS.md
+LOCAL-DEV-WORKFLOW.md
