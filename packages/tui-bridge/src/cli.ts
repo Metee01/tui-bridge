@@ -85,7 +85,7 @@ Examples:
 Options:
   --no-tunnel       Skip cloudflared; local-only (or --lan) access.
   --lan             Bind to 0.0.0.0 and use your LAN IP (phone on same WiFi).
-                    Use this when cloudflared is not installed.
+                    Use this when cloudflared is not installed. Implies --no-tunnel.
   --no-pause        Do not wait for Enter before opening the TUI (default pauses
                     so you can scan the QR code while it stays on screen).
   --web-root <dir>  Serve web assets from <dir> instead of the bundled build

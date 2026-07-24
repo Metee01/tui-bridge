@@ -78,14 +78,23 @@ export class WsGateway {
   }
 
   #originAllowed(req: IncomingMessage): boolean {
-    // Quick Tunnel forwards with origin; localhost connect may omit. Block obviously
-    // foreign origins, but do not rely on this as the only gate (pairing token is).
+    // Quick Tunnel forwards with origin; localhost/LAN connect may omit. Block
+    // obviously foreign origins, but do not rely on this as the only gate
+    // (pairing token is). On --lan, the page is served from http://<LAN-IP>:port
+    // and the WebSocket's Origin host equals the request Host — allow that
+    // same-origin case rather than hard-coding every possible LAN IP.
     const origin = req.headers.origin;
     if (!origin) return true;
     try {
       const url = new URL(origin);
-      const host = url.hostname;
-      return host === "127.0.0.1" || host === "localhost" || host.endsWith(".trycloudflare.com");
+      const originHost = url.hostname;
+      const reqHost = (req.headers.host ?? "").split(":", 1)[0];
+      if (reqHost && originHost === reqHost) return true;
+      return (
+        originHost === "127.0.0.1" ||
+        originHost === "localhost" ||
+        originHost.endsWith(".trycloudflare.com")
+      );
     } catch {
       return false;
     }
